@@ -1,3 +1,4 @@
+// https://adventofcode.com/2020/day/3
 // Run with `deno run --allow-read d3.ts`
 
 let input = await Deno.readTextFile('input.txt')

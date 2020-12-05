@@ -1,3 +1,4 @@
+// https://adventofcode.com/2020/day/1
 use std::io::{BufRead, BufReader};
 use std::fs::File;
 
