@@ -2,7 +2,7 @@
 
 let input = await Deno.readTextFile('input.txt')
 
-const passports = input.split('\n').filter(Boolean)
+const passports = input.trim().split('\n')
 
 const getId = (passport: string) => {
   const row = parseInt(passport.slice(0, 7).replace(/F/g, '0').replace(/B/g, '1'), 2)
