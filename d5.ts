@@ -3,7 +3,7 @@
 
 let input = await Deno.readTextFile('input.txt')
 
-const passports = input.trim().split('\n')
+const boardingPasses = input.trim().split('\n')
 
 const getId = (passport: string) => {
   const row = parseInt(passport.slice(0, 7).replace(/F/g, '0').replace(/B/g, '1'), 2)
@@ -11,7 +11,7 @@ const getId = (passport: string) => {
   return row * 8 + column
 }
 
-const ids = passports.map(getId)
+const ids = boardingPasses.map(getId)
 
 // part 1
 console.log(Math.max(...ids))
