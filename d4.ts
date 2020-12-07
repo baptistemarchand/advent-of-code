@@ -1,5 +1,4 @@
-// https://adventofcode.com/2020/day/4
-// Run with `deno run --allow-read d4.ts`
+// https://adventofcode.com/2020/day/4 | Run with `deno run --allow-read d4.ts`
 
 let input = await Deno.readTextFile('input.txt')
 
@@ -15,20 +14,20 @@ const stringToPassport = (line: string) => {
 const passports = input.replace(/\n/g, ' ').split('  ').map(stringToPassport)
 
 const validPassports = passports.filter(p => {
-  if (!p.byr || p.byr.length !== 4 || parseInt(p.byr) < 1920 || parseInt(p.byr) > 2002) {
+  if (p.byr?.length !== 4 || parseInt(p.byr) < 1920 || parseInt(p.byr) > 2002) {
     return false
   }
-  if (!p.iyr || p.iyr.length !== 4 || parseInt(p.iyr) < 2010 || parseInt(p.iyr) > 2020) {
+  if (p.iyr?.length !== 4 || parseInt(p.iyr) < 2010 || parseInt(p.iyr) > 2020) {
     return false
   }
-  if (!p.eyr || p.eyr.length !== 4 || parseInt(p.eyr) < 2020 || parseInt(p.eyr) > 2030) {
+  if (p.eyr?.length !== 4 || parseInt(p.eyr) < 2020 || parseInt(p.eyr) > 2030) {
     return false
   }
   const unit = p.hgt?.slice(-2)
   if (unit !== 'cm' && unit !== 'in') {
     return false
   }
-  const height = parseInt(p.hgt?.slice(0, -2), 10)
+  const height = parseInt(p.hgt)
   if (unit === 'cm' && (height < 150 || height > 193)) return false
   if (unit === 'in' && (height < 59 || height > 76)) return false
 

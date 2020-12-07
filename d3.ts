@@ -1,26 +1,25 @@
-// https://adventofcode.com/2020/day/3
-// Run with `deno run --allow-read d3.ts`
+// https://adventofcode.com/2020/day/3 | Run with `deno run --allow-read d3.ts`
 
-let input = await Deno.readTextFile('input.txt')
+const map = (await Deno.readTextFile('input.txt')).split('\n')
 
-const map = input.split('\n')
-const width = map[0].length
-const height = map.length
+const go = (dx: number, dy: number) => {
+  let x = 0
+  let y = 0
+  let treeCount = 0
 
-const isTree = (x: number, y: number) => map[y][x % width] === '#'
-
-let x = 0
-let y = 0
-let treeCount = 0
-
-while (y < height) {
-  if (isTree(x, y)) {
-    treeCount++
+  while (y < map.length) {
+    treeCount += map[y][x % map[0].length] === '#' ? 1 : 0
+    x += dx
+    y += dy
   }
-  x += 1
-  y += 2
+
+  return treeCount
 }
 
-console.log(treeCount)
+// part 1
+console.log(go(3, 1))
+
+// part 2
+console.log(go(1, 1) * go(3, 1) * go(5, 1) * go(7, 1) * go(1, 2))
 
 export {} // To prevent isolatedModules error

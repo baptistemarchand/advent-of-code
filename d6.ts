@@ -1,5 +1,4 @@
-// https://adventofcode.com/2020/day/6
-// Run with `deno run --allow-read d6.ts`
+// https://adventofcode.com/2020/day/6 | Run with `deno run --allow-read d6.ts`
 
 let input = await Deno.readTextFile('input.txt')
 
