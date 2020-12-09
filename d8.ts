@@ -1,4 +1,4 @@
-// https://adventofcode.com/2020/day/7 | Run with `deno run --allow-read d7.ts`
+// https://adventofcode.com/2020/day/8 | Run with `deno run --allow-read d8.ts`
 
 const lineToInstruction = (instruction: string): [string, number] => {
   const [ins, n] = instruction.split(' ')
