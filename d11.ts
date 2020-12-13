@@ -1,4 +1,4 @@
-// https://adventofcode.com/2020/day/10 | Run with `deno run --allow-read d10.ts`
+// https://adventofcode.com/2020/day/11 | Run with `deno run --allow-read d11.ts`
 
 const next = (
   lines: string[],
