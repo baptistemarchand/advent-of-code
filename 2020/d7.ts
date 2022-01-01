@@ -2,39 +2,44 @@
 
 const rules = (await Deno.readTextFile('input.txt')).split('.\n')
 
-const rGraph: Record<string, string[]> = {} // "reverse" graph
+const graph: Record<string, string[]> = {}
 
 for (const rule of rules) {
   const [name, content] = rule.split(' bags contain ')
-  if (!rGraph[name]) {
-    rGraph[name] = []
+  if (!graph[name]) {
+    graph[name] = []
   }
+
   if (content === 'no other bags') {
     continue
   }
 
-  for (const bag of content.split(', ')) {
+  const bags = content.split(', ')
+  for (const bag of bags) {
     const [_, color] = bag.match(/\d+ ([a-z]+ [a-z]+) bags?/)!
-    if (!rGraph[color]) {
-      rGraph[color] = []
+    if (!graph[color]) {
+      graph[color] = []
     }
-    rGraph[color].push(name)
+    graph[color].push(name)
   }
 }
 
-console.log(rGraph)
-
 const getReachableColors = (color: string): string[] => {
   let result = [color]
-  const nextColors = rGraph[color]
+
+  const nextColors = graph[color]
+
   for (const nextColor of nextColors) {
-    const reachableColors = getReachableColors(nextColor)
-    result = result.concat(reachableColors)
+    const reachable = getReachableColors(nextColor)
+    result = result.concat(reachable)
   }
 
   return result
 }
 
-console.log(getReachableColors('shiny gold'))
+const reachable = getReachableColors('shiny gold')
+const result = new Set(reachable)
+
+console.log(result.size - 1)
 
 export {} // To prevent isolatedModules error
