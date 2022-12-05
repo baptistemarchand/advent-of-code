@@ -6,7 +6,7 @@ const contains = ([minA, maxA]: Range, [minB, maxB]: Range) => minA <= minB && m
 const overlaps = ([minA, maxA]: Range, [minB, maxB]: Range) => !(maxA < minB || maxB < minA)
 
 const result = (await Deno.readTextFile('./input.txt')).split('\n').filter(line => {
-  const [a, b] = line.split(',').map(r => r.split('-').map(x => parseInt(x)) as Range)
+  const [a, b] = line.split(',').map(r => r.split('-').map(Number) as Range)
   // return contains(a, b) || contains(b, a)
   return overlaps(a, b)
 }).length
