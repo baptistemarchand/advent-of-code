@@ -1,4 +1,4 @@
-// https://adventofcode.com/2022/day/2 | Run with `deno run --allow-read d2.ts`
+// https://adventofcode.com/2022/day/3 | Run with `deno run --allow-read d3.ts`
 
 const getPriority = (c: string) => (c.toUpperCase() === c ? c.charCodeAt(0) - 65 + 27 : c.charCodeAt(0) - 96)
 
