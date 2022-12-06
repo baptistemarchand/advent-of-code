@@ -2,16 +2,7 @@
 
 const input = (await Deno.readTextFile('./input.txt')).split('')
 
-const allLettersDifferent = (letters: string[]) => {
-  const seenLetters = new Set<string>()
-  for (const letter of letters) {
-    if (seenLetters.has(letter)) {
-      return false
-    }
-    seenLetters.add(letter)
-  }
-  return true
-}
+const allLettersDifferent = (letters: string[]) => new Set(letters).size === letters.length
 
 const MARKER_LENGTH = 14
 
