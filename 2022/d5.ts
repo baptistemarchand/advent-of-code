@@ -4,11 +4,13 @@ const [drawing, instructions] = (await Deno.readTextFile('./input.txt')).split('
 
 const MAX_HEIGHT = 7
 
+const getCrate = (stackId: number, height: number) => drawing.charAt(36 * (MAX_HEIGHT - height) + 1 + (stackId - 1) * 4)
+
 const stacks: Record<string, string[]> = {}
 for (let stackId = 1; stackId <= 9; stackId++) {
   stacks[stackId] = []
   for (let height = 0; height <= MAX_HEIGHT; height++) {
-    const crate = drawing.charAt(36 * (MAX_HEIGHT - height) + 1 + (stackId - 1) * 4)
+    const crate = getCrate(stackId, height)
     if (crate !== ' ') {
       stacks[stackId][height] = crate
     }
