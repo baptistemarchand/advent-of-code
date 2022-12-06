@@ -1,5 +1,7 @@
 // https://adventofcode.com/2022/day/3 | Run with `deno run --allow-read d3.ts`
 
+import {sum} from '../utils.ts'
+
 // A/X = rock
 // B/Y = paper
 // C/Z = Scissors
@@ -33,6 +35,6 @@ const scores2: Record<string, number> = {
 const result = (await Deno.readTextFile('./input.txt'))
   .split('\n')
   .map(x => scores2[x])
-  .reduce((prev, curr) => prev + curr, 0)
+  .reduce(sum)
 
 console.log(result)
