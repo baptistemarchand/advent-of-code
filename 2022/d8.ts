@@ -1,4 +1,4 @@
-// https://adventofcode.com/2022/day/7 | Run with `deno run --allow-read d7.ts`
+// https://adventofcode.com/2022/day/8 | Run with `deno run --allow-read d8.ts`
 
 const grid = (await Deno.readTextFile('./input.txt')).split('\n').map(line => line.split('').map(Number))
 

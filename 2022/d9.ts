@@ -1,4 +1,4 @@
-// https://adventofcode.com/2022/day/7 | Run with `deno run --allow-read d7.ts`
+// https://adventofcode.com/2022/day/9 | Run with `deno run --allow-read d9.ts`
 
 const instructions = (await Deno.readTextFile('./input.txt')).split('\n')
 
