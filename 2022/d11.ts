@@ -19,8 +19,8 @@ const play = () => {
     for (let item of monkey.items) {
       item = eval(monkey.operation.replaceAll('old', `${item}`))
       item = item % MAGIC
-      const targetMoney = item % monkey.divisibleAmount === 0 ? monkey.trueMonkey : monkey.falseMonkey
-      monkeys[targetMoney].items.push(item)
+      const targetMonkey = item % monkey.divisibleAmount === 0 ? monkey.trueMonkey : monkey.falseMonkey
+      monkeys[targetMonkey].items.push(item)
       monkey.count++
     }
     monkey.items = []
