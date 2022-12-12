@@ -57,14 +57,12 @@ const processTile = ({row, col, score}: Tile) => {
     Deno.exit()
   }
 
-  for (const [dRow, dCol] of [
-    [-1, 0], // North
-    [1, 0], // South
-    [0, -1], // West
-    [0, 1], // East
+  for (const [newRow, newCol] of [
+    [row - 1, col], // North
+    [row + 1, col], // South
+    [row, col - 1], // West
+    [row, col + 1], // East
   ]) {
-    const newRow = row + dRow
-    const newCol = col + dCol
     if (newCol < 0 || newRow < 0 || newRow >= map.length || newCol >= map[0].length) {
       continue
     }
