@@ -42,10 +42,9 @@ for (const steps of lines) {
 
 let curr = {row: 0, col: 500}
 
-const isEmpty = ({row, col}: {row: number; col: number}) =>
-  !['#', 'o'].includes(map[row]?.[col]) &&
-  // For part 2 :
-  row < maxRow
+const isEmpty = ({row, col}: {row: number; col: number}) => !['#', 'o'].includes(map[row]?.[col])
+// For part 2 :
+// && row < maxRow
 
 const move = () => {
   const candidates = [
