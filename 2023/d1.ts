@@ -14,13 +14,13 @@ const result1 = (await Deno.readTextFile('./input.txt'))
 
 const words = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine']
 
-const getDigit = (line: string, i: number) => {
-  if (!isNaN(line[i] as any)) {
-    return line[i]
+const getDigit = (line: string) => {
+  if (!isNaN(line[0] as any)) {
+    return line[0]
   }
 
   for (let w = 0; w < words.length; w++) {
-    if (line.slice(i).startsWith(words[w])) {
+    if (line.startsWith(words[w])) {
       return `${w + 1}`
     }
   }
@@ -30,7 +30,7 @@ const getDigit = (line: string, i: number) => {
 
 const firstDigit = (line: string) => {
   for (let i = 0; i < line.length; i++) {
-    const digit = getDigit(line, i)
+    const digit = getDigit(line.slice(i))
     if (digit) {
       return digit
     }
@@ -39,7 +39,7 @@ const firstDigit = (line: string) => {
 
 const lastDigit = (line: string) => {
   for (let i = line.length - 1; i >= 0; i--) {
-    const digit = getDigit(line, i)
+    const digit = getDigit(line.slice(i))
     if (digit) {
       return digit
     }
