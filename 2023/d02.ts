@@ -1,4 +1,4 @@
-// https://adventofcode.com/2023/day/2 | Run with `deno run --allow-read d2.ts`
+// https://adventofcode.com/2023/day/2 | Run with `deno run --allow-read d02.ts`
 
 import {sum} from '../utils.ts'
 
