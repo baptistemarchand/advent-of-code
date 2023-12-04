@@ -10,8 +10,9 @@ const cards = (await Deno.readTextFile('./input.txt')).split('\n').map(line => {
     winCount: ours.filter(n => winning.includes(n)).length,
   }
 })
-// .map(card => (card.winCount ? 2 ** (card.winCount - 1) : 0))
-// .reduce(sum)
+
+// part 1
+console.log(cards.map(card => (card.winCount ? 2 ** (card.winCount - 1) : 0)).reduce(sum))
 
 for (let i = 0; cards[i]; i++) {
   const card = cards[i]
@@ -21,4 +22,5 @@ for (let i = 0; cards[i]; i++) {
   }
 }
 
+// part 2
 console.log(cards.length)
