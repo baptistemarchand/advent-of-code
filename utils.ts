@@ -6,6 +6,8 @@ export const mul = (a: number, b: number) => a * b
 export const max = Math.max
 export const min = Math.min
 
+export const getNumbers = (line: string) => [...line.matchAll(/\d+/g)].map(m => +m[0])
+
 const cursorUp = (n: number) => {
   writeAllSync(Deno.stdout, new TextEncoder().encode(`\u001b[${n + 1}A`))
 }
