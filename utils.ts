@@ -38,3 +38,15 @@ export const printGrid = <T>(
   }
   console.log(out)
 }
+
+export const leastCommonMultiple = (ns: number[]) => {
+  const gcd = (a: number, b: number): number => (!b ? a : gcd(b, a % b))
+  const lcm = (a: number, b: number) => (a * b) / gcd(a, b)
+
+  let multiple = min(...ns)
+  ns.forEach(n => {
+    multiple = lcm(multiple, n)
+  })
+
+  return multiple
+}
