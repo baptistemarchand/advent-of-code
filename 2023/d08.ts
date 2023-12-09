@@ -3,11 +3,11 @@
 import {leastCommonMultiple} from '../utils.ts'
 
 const parse = async () => {
-  const [a, x] = (await Deno.readTextFile('./input.txt')).split('\n\n')
+  const [directions, graphLines] = (await Deno.readTextFile('./input.txt')).split('\n\n')
   return {
-    directions: a.split('') as ('L' | 'R')[],
+    directions: directions.split('') as ('L' | 'R')[],
     nodes: Object.fromEntries(
-      x.split('\n').map(line => {
+      graphLines.split('\n').map(line => {
         const [_, label, L, R] = line.match(/(\w+) = \((\w+), (\w+)\)/)!
         return [label, {label, L, R}]
       }),
