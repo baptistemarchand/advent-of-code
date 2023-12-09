@@ -19,21 +19,16 @@ const {directions, nodes} = await parse()
 
 const getNextLabel = (currentLabel: string, i: number) => {
   const currentNode = nodes[currentLabel]
-
   const direction: 'L' | 'R' = directions[i % directions.length]
   return currentNode[direction]
 }
 
 const getStepCount = (startLabel: string, isEndNode: (label: string) => boolean) => {
-  let label = startLabel
   let i = 0
-  while (true) {
-    if (isEndNode(label)) {
-      return i
-    }
+  for (let label = startLabel; !isEndNode(label); i++) {
     label = getNextLabel(label, i)
-    i++
   }
+  return i
 }
 
 // part 1
@@ -42,7 +37,6 @@ console.log(getStepCount('AAA', l => l === 'ZZZ'))
 // part 2
 const startLabels = Object.keys(nodes).filter(label => label.at(-1) === 'A')
 
-// Disclaimer : I don't know why this works
 const stepCounts = startLabels.map(label => getStepCount(label, l => l.at(-1) === 'Z'))
 
 console.log(leastCommonMultiple(stepCounts))
