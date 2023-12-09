@@ -8,7 +8,7 @@ export const reduceMax = (prev: number, curr: number) => max(prev, curr)
 export const reduceMin = (prev: number, curr: number) => min(prev, curr)
 export const min = Math.min
 
-export const getNumbers = (line: string) => [...line.matchAll(/\d+/g)].map(m => +m[0])
+export const getNumbers = (line: string) => [...line.matchAll(/-?\d+/g)].map(m => +m[0])
 
 const cursorUp = (n: number) => {
   writeAllSync(Deno.stdout, new TextEncoder().encode(`\u001b[${n + 1}A`))
