@@ -1,4 +1,4 @@
-// https://adventofcode.com/2023/day/8 | Run with `deno run --allow-read d08.ts`
+// https://adventofcode.com/2023/day/9 | Run with `deno run --allow-read d09.ts`
 
 import {getNumbers, sum} from '../utils.ts'
 
