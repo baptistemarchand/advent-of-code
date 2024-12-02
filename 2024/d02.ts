@@ -1,6 +1,6 @@
 // https://adventofcode.com/2024/day/2 | Run with `deno run --allow-read d02.ts`
 
-import {getNumbers} from '../utils.ts'
+import {getNumbers, range} from '../utils.ts'
 
 const lines = (await Deno.readTextFile('./input.txt')).split('\n')
 
@@ -29,14 +29,6 @@ console.log(part1)
 
 const part2 = lines.filter(line => {
   const ns = getNumbers(line)
-  if (isValid(ns)) {
-    return true
-  }
-
-  for (let i = 0; i < ns.length; i++) {
-    if (isValid(ns.filter((_, j) => i !== j))) {
-      return true
-    }
-  }
+  return isValid(ns) || range(ns.length).some(i => isValid(ns.filter((_, j) => i !== j)))
 }).length
 console.log(part2)

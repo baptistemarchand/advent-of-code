@@ -8,6 +8,7 @@ export const max = Math.max
 export const reduceMax = (prev: number, curr: number) => max(prev, curr)
 export const reduceMin = (prev: number, curr: number) => min(prev, curr)
 export const min = Math.min
+export const range = (n: number) => [...Array(n).keys()]
 
 export const getNumbers = (line: string) => [...line.matchAll(/-?\d+/g)].map(m => +m[0])
 
