@@ -11,19 +11,6 @@ export const min = Math.min
 
 export const getNumbers = (line: string) => [...line.matchAll(/-?\d+/g)].map(m => +m[0])
 
-export const zip = <T, U>(arr1: T[], arr2: U[]): [T, U][] => {
-  if (arr1.length !== arr2.length) {
-    throw Error('Cannot zip because arrays do not have the same length')
-  }
-
-  const result: [T, U][] = []
-  for (let i = 0; i < arr1.length; i++) {
-    result.push([arr1[i], arr2[i]])
-  }
-
-  return result
-}
-
 // const cursorUp = (n: number) => {
 //   writeAllSync(Deno.stdout, new TextEncoder().encode(`\u001b[${n + 1}A`))
 // }

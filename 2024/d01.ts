@@ -1,6 +1,7 @@
 // https://adventofcode.com/2024/day/1 | Run with `deno run --allow-read d01.ts`
 
-import {getNumbers, zip} from '../utils.ts'
+import {getNumbers} from '../utils.ts'
+import {zip, sumOf} from '@std/collections'
 
 const lines = (await Deno.readTextFile('./input.txt')).split('\n')
 
@@ -20,8 +21,8 @@ for (const line of lines) {
 as.sort()
 bs.sort()
 
-const part1 = zip(as, bs).reduce((total, [a, b]) => total + Math.abs(a - b), 0)
+const part1 = sumOf(zip(as, bs), ([a, b]) => Math.abs(a - b))
 console.log(part1)
 
-const part2 = as.reduce((total, a) => total + a * (count[a] ?? 0), 0)
+const part2 = sumOf(as, a => a * (count[a] ?? 0))
 console.log(part2)
