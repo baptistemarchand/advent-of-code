@@ -1,5 +1,3 @@
-// https://adventofcode.com/2024/day/2 | Run with `deno run --allow-read d02.ts`
-
 import {getNumbers, range} from '../utils.ts'
 
 const lines = (await Deno.readTextFile('./input.txt')).split('\n')

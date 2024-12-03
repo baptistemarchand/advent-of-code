@@ -1,5 +1,3 @@
-// https://adventofcode.com/2024/day/1 | Run with `deno run --allow-read d01.ts`
-
 import {getNumbers} from '../utils.ts'
 import {zip, sumOf} from '@std/collections'
 

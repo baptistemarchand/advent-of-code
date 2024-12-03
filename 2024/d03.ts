@@ -1,5 +1,3 @@
-// https://adventofcode.com/2024/day/3 | Run with `deno run --allow-read d03.ts`
-
 import {sumOf} from '@std/collections'
 
 const input = await Deno.readTextFile('./input.txt')
