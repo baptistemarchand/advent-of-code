@@ -20,13 +20,13 @@ for (let i = -lines[0].length; i < lines[0].length * 2; i++) {
 
 console.log(part1)
 
-for (let i = 0; i < lines.length; i++) {
-  for (let j = 0; j < lines[i].length; j++) {
-    if (lines[i + 1]?.[j + 1] !== 'A') {
+for (let i = 1; i < lines.length - 1; i++) {
+  for (let j = 1; j < lines[i].length - 1; j++) {
+    if (lines[i][j] !== 'A') {
       continue
     }
-    const x = `${lines[i][j]}${lines[i][j + 2]}${lines[i + 2]?.[j]}${lines[i + 2]?.[j + 2]}`
-    part2 += +(x === 'MSMS') + +(x === 'SMSM') + +(x === 'SSMM') + +(x === 'MMSS')
+    const x = `${lines[i - 1][j - 1]}${lines[i - 1][j + 1]}${lines[i + 1][j - 1]}${lines[i + 1][j + 1]}`
+    part2 += +['MSMS', 'SMSM', 'SSMM', 'MMSS'].includes(x)
   }
 }
 
