@@ -1,3 +1,5 @@
+import {findPosInGrid, walkGrid} from '../utils.ts'
+
 const map = (await Deno.readTextFile('./input.txt')).split('\n').map(l => l.split(''))
 
 const next: Record<string, [number, number, string]> = {
@@ -7,20 +9,9 @@ const next: Record<string, [number, number, string]> = {
   LEFT: [-1, 0, 'UP'],
 }
 
-const getFirstPos = (): [number, number] => {
-  for (let i = 0; i < map.length; i++) {
-    for (let j = 0; j < map.length; j++) {
-      if (map[i][j] === '^') {
-        return [j, i]
-      }
-    }
-  }
-  throw Error('lol')
-}
+const {x: firstX, y: firstY} = findPosInGrid(map, '^')
 
-const [firstX, firstY] = getFirstPos()
-
-const walk = (wall?: {x: number; y: number}) => {
+const getPathInfo = (wall?: {x: number; y: number}) => {
   let [x, y, dir] = [firstX, firstY, 'UP']
 
   const cache = new Set<string>()
@@ -56,16 +47,14 @@ const walk = (wall?: {x: number; y: number}) => {
   }
 }
 
-const {length: part1} = walk()
+const {length: part1} = getPathInfo()
 
 let part2 = 0
 
-for (let y = 0; y < map.length; y++) {
-  for (let x = 0; x < map[0].length; x++) {
-    if (map[y][x] === 'X' && walk({x, y}).isLoop) {
-      part2++
-    }
+walkGrid(map, ({x, y, e}) => {
+  if (e === 'X' && getPathInfo({x, y}).isLoop) {
+    part2++
   }
-}
+})
 
 console.log(part1, part2)

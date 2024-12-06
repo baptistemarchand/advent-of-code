@@ -1,7 +1,3 @@
-// import {bgRgb8} from 'https://deno.land/std@0.167.0/fmt/colors.ts'
-// import {writeAllSync} from 'https://deno.land/std/streams/write_all.ts'
-// import chalk from 'chalk'
-
 export const sum = (a: number, b: number) => a + b
 export const mul = (a: number, b: number) => a * b
 export const max = Math.max
@@ -9,6 +5,10 @@ export const reduceMax = (prev: number, curr: number) => max(prev, curr)
 export const reduceMin = (prev: number, curr: number) => min(prev, curr)
 export const min = Math.min
 export const range = (n: number) => [...Array(n).keys()]
+
+export const getNumbers = (line: string) => [...line.matchAll(/-?\d+/g)].map(m => +m[0])
+
+// -----------------------------[ GRIDS ]-----------------------------
 
 export const adj4 = [
   [-1, 0], //  ⬆️ N
@@ -26,26 +26,36 @@ export const adj8 = [
   [1, 0], //   ⬇️ S
   [1, 1], //   ↘️ SE
 ]
-export const getNumbers = (line: string) => [...line.matchAll(/-?\d+/g)].map(m => +m[0])
 
-// const cursorUp = (n: number) => {
-//   writeAllSync(Deno.stdout, new TextEncoder().encode(`\u001b[${n + 1}A`))
-// }
+export const findPosInGrid = <T>(map: T[][], e: T): {x: number; y: number} => {
+  for (let y = 0; y < map.length; y++) {
+    for (let x = 0; x < map.length; x++) {
+      if (map[y][x] === e) {
+        return {x, y}
+      }
+    }
+  }
+  throw Error(`${e} not found in grid`)
+}
+
+export const walkGrid = <T>(map: T[][], fn: (args: {e: T; x: number; y: number}) => void) => {
+  for (let y = 0; y < map.length; y++) {
+    for (let x = 0; x < map.length; x++) {
+      fn({x, y, e: map[y][x]})
+    }
+  }
+}
 
 export const printGrid = <T>(
   grid: T[][],
   formatter: (e: T, row: number, col: number) => {c?: string; bg?: string} = e => ({c: String(e)}),
   {
-    cursor = false,
     startCol = 0,
   }: {
     cursor?: boolean
     startCol?: number
   } = {},
 ) => {
-  // if (cursor) {
-  //   cursorUp(grid.length)
-  // }
   let out = ''
   for (let row = 0; row < grid.length; row++) {
     for (let col = startCol; col < grid[0].length; col++) {
@@ -57,6 +67,8 @@ export const printGrid = <T>(
   }
   console.log(out)
 }
+
+// -----------------------------[ MATHS ]-----------------------------
 
 export const leastCommonMultiple = (ns: number[]) => {
   const gcd = (a: number, b: number): number => (!b ? a : gcd(b, a % b))
