@@ -32,30 +32,31 @@ export const getNumbers = (line: string) => [...line.matchAll(/-?\d+/g)].map(m =
 //   writeAllSync(Deno.stdout, new TextEncoder().encode(`\u001b[${n + 1}A`))
 // }
 
-// export const printGrid = <T>(
-//   grid: T[][],
-//   formatter: (e: T, row: number, col: number) => {c?: string; bg: string},
-//   {
-//     cursor = false,
-//     startCol = 0,
-//   }: {
-//     cursor?: boolean
-//     startCol?: number
-//   } = {},
-// ) => {
-//   // if (cursor) {
-//   //   cursorUp(grid.length)
-//   // }
-//   let out = ''
-//   for (let row = 0; row < grid.length; row++) {
-//     for (let col = startCol; col < grid[0].length; col++) {
-//       const {c, bg} = formatter(grid[row][col], row, col)
-//       out += chalk.bgHex(bg)(c ?? ' ')
-//     }
-//     out += '\n'
-//   }
-//   console.log(out)
-// }
+export const printGrid = <T>(
+  grid: T[][],
+  formatter: (e: T, row: number, col: number) => {c?: string; bg?: string} = e => ({c: String(e)}),
+  {
+    cursor = false,
+    startCol = 0,
+  }: {
+    cursor?: boolean
+    startCol?: number
+  } = {},
+) => {
+  // if (cursor) {
+  //   cursorUp(grid.length)
+  // }
+  let out = ''
+  for (let row = 0; row < grid.length; row++) {
+    for (let col = startCol; col < grid[0].length; col++) {
+      const {c, bg} = formatter(grid[row][col], row, col)
+      out += c ?? ' '
+      // out += chalk.bgHex(bg)(c ?? ' ')
+    }
+    out += '\n'
+  }
+  console.log(out)
+}
 
 export const leastCommonMultiple = (ns: number[]) => {
   const gcd = (a: number, b: number): number => (!b ? a : gcd(b, a % b))
