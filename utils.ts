@@ -29,7 +29,7 @@ export const adj8 = [
 
 export const findPosInGrid = <T>(map: T[][], e: T): {x: number; y: number} => {
   for (let y = 0; y < map.length; y++) {
-    for (let x = 0; x < map.length; x++) {
+    for (let x = 0; x < map[0].length; x++) {
       if (map[y][x] === e) {
         return {x, y}
       }
@@ -40,7 +40,7 @@ export const findPosInGrid = <T>(map: T[][], e: T): {x: number; y: number} => {
 
 export const walkGrid = <T>(map: T[][], fn: (args: {e: T; x: number; y: number}) => void) => {
   for (let y = 0; y < map.length; y++) {
-    for (let x = 0; x < map.length; x++) {
+    for (let x = 0; x < map[0].length; x++) {
       fn({x, y, e: map[y][x]})
     }
   }
