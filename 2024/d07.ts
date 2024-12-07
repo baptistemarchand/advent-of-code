@@ -13,7 +13,7 @@ const solve = (ops: Array<(a: number, b: number) => number>) => {
   }
 
   return sumOf(
-    lines.filter(([total, ...parts]) => getResults(parts.reverse()).some(p => p === total)),
+    lines.filter(([total, ...ns]) => getResults(ns.reverse()).some(p => p === total)),
     ([total]) => total,
   )
 }
