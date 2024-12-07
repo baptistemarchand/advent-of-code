@@ -9,7 +9,7 @@ const solve = (ops: Array<(a: number, b: number) => number>) => {
       return [ns[0]]
     }
 
-    return getResults(ns.slice(1)).flatMap(x => ops.map(op => op(x, ns[0])))
+    return getResults(ns.slice(1)).flatMap(result => ops.map(op => op(result, ns[0])))
   }
 
   return sumOf(
