@@ -46,6 +46,10 @@ export const walkGrid = <T>(map: T[][], fn: (args: {e: T; x: number; y: number})
   }
 }
 
+export const isInside = <T>({map, x, y}: {map: T[][]; x: number; y: number}) => {
+  return x >= 0 && y >= 0 && x < map[0].length && y < map.length
+}
+
 export const printGrid = <T>(
   grid: T[][],
   formatter: (e: T, row: number, col: number) => {c?: string; bg?: string} = e => ({c: String(e)}),
