@@ -15,6 +15,7 @@ walkGrid(map, ({e, p}) => {
   }
 })
 
+// Can we reach point Z, starting from P ?
 const canReach = (p: Point, z: Point): boolean => {
   if (p.x === z.x && p.y === z.y) {
     return true
@@ -29,12 +30,12 @@ const canReach = (p: Point, z: Point): boolean => {
 }
 
 const getScore = (zero: Point) => nines.filter(nine => canReach(nine, zero)).length
-console.log(sumOf(zeros, z => getScore(z)))
+const part1 = sumOf(zeros, z => getScore(z))
 
 const getRating = (z: Point) => {
   const paths = new Set<string>()
 
-  const getRating_ = (p: Point, path = '') => {
+  const explore = (p: Point, path = '') => {
     if (!isInside({map, p})) {
       return
     }
@@ -46,13 +47,14 @@ const getRating = (z: Point) => {
 
     for (const np of adj4(p)) {
       if (map[np.y]?.[np.x] === map[p.y][p.x] + 1) {
-        getRating_(np, path + `(${np.x},${np.y})`)
+        explore(np, path + `(${np.x},${np.y})`)
       }
     }
   }
 
-  getRating_(z)
+  explore(z) // Explore the map starting from a zero point
   return paths.size
 }
 
-console.log(sumOf(zeros, z => getRating(z)))
+const part2 = sumOf(zeros, z => getRating(z))
+console.log(part1, part2)
