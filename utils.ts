@@ -10,11 +10,13 @@ export const getNumbers = (line: string) => [...line.matchAll(/-?\d+/g)].map(m =
 
 // -----------------------------[ GRIDS ]-----------------------------
 
-export const adj4 = [
-  [-1, 0], //  ⬆️ N
-  [0, -1], //  ⬅️ W
-  [0, 1], //   ➡️ E
-  [1, 0], //   ⬇️ S
+export type Point = {x: number; y: number}
+
+export const adj4 = ({x, y} = {x: 0, y: 0}) => [
+  {x: x - 1, y: y + 0}, //  ⬆️ N
+  {x: x + 0, y: y - 1}, //  ⬅️ W
+  {x: x + 0, y: y + 1}, //   ➡️ E
+  {x: x + 1, y: y + 0}, //   ⬇️ S
 ]
 export const adj8 = [
   [-1, -1], // ↖️  NW
@@ -38,16 +40,19 @@ export const findPosInGrid = <T>(map: T[][], e: T): {x: number; y: number} => {
   throw Error(`${e} not found in grid`)
 }
 
-export const walkGrid = <T>(map: T[][], fn: (args: {e: T; x: number; y: number}) => void) => {
+export const walkGrid = <T>(map: T[][], fn: (args: {e: T; x: number; y: number; p: Point}) => void) => {
   for (let y = 0; y < map.length; y++) {
     for (let x = 0; x < map[0].length; x++) {
-      fn({x, y, e: map[y][x]})
+      fn({x, y, e: map[y][x], p: {x, y}})
     }
   }
 }
 
-export const isInside = <T>({map, x, y}: {map: T[][]; x: number; y: number}) => {
-  return x >= 0 && y >= 0 && x < map[0].length && y < map.length
+export const isInside = <T>({map, x, y, p}: {map: T[][]; x?: number; y?: number; p?: Point}) => {
+  if (p) {
+    return p.x >= 0 && p.y >= 0 && p.x < map[0].length && p.y < map.length
+  }
+  return x! >= 0 && y! >= 0 && x! < map[0].length && y! < map.length
 }
 
 export const printGrid = <T>(
