@@ -3,9 +3,24 @@ import {getNumbers} from '../utils.ts'
 
 const ns = getNumbers(await Deno.readTextFile('./input.txt'))
 
+const next = (n: number): number[] => {
+  if (n === 0) {
+    return [1]
+  }
+
+  const s = n.toString()
+  if (s.length % 2 === 0) {
+    const a = parseInt(s.slice(0, s.length / 2), 10)
+    const b = parseInt(s.slice(s.length / 2), 10)
+    return [a, b]
+  }
+
+  return [2024 * n]
+}
+
 const cache: Record<string, number> = {}
 
-const countStones = (ns: number[], depth: number, total = 0): number => {
+const count = (ns: number[], depth: number): number => {
   if (depth <= 0) {
     return ns.length
   }
@@ -13,24 +28,13 @@ const countStones = (ns: number[], depth: number, total = 0): number => {
   return sumOf(ns, n => {
     const key = `${n}_${depth}`
 
-    if (cache[key]) {
-      return cache[key]
+    if (!cache[key]) {
+      cache[key] = count(next(n), depth - 1)
     }
 
-    if (n === 0) {
-      return (cache[key] = countStones([1], depth - 1, total))
-    }
-
-    const s = n.toString()
-    if (s.length % 2 === 0) {
-      const a = parseInt(s.slice(0, s.length / 2), 10)
-      const b = parseInt(s.slice(s.length / 2), 10)
-      return (cache[key] = countStones([a, b], depth - 1, total))
-    }
-
-    return countStones([2024 * n], depth - 1, total)
+    return cache[key]
   })
 }
 
-console.log(countStones(ns, 25))
-console.log(countStones(ns, 75))
+console.log(count(ns, 25))
+console.log(count(ns, 75))
