@@ -90,3 +90,25 @@ export const leastCommonMultiple = (ns: number[]) => {
 
   return multiple
 }
+
+type Equation = {
+  a: number
+  b: number
+  r: number
+}
+// Cramer equations system
+// Solve a system of two equations of the form :
+// ax + by = r
+export const solveTwoEquations = (e1: Equation, e2: Equation) => {
+  const determinant = e1.a * e2.b - e1.b * e2.a
+
+  if (determinant === 0) {
+    // No solution
+    return null
+  }
+
+  const x = (e1.r * e2.b - e1.b * e2.r) / determinant
+  const y = (e1.a * e2.r - e1.r * e2.a) / determinant
+
+  return {x, y}
+}
