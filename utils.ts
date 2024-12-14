@@ -11,6 +11,7 @@ export const getNumbers = (line: string) => [...line.matchAll(/-?\d+/g)].map(m =
 // -----------------------------[ GRIDS ]-----------------------------
 
 export type Point = {x: number; y: number}
+export const point = (x: number, y: number): Point => ({x, y})
 
 export const adj4 = ({x, y} = {x: 0, y: 0}) => [
   {x: x - 1, y: y + 0}, //  ⬆️ N
@@ -112,3 +113,6 @@ export const solveTwoEquations = (e1: Equation, e2: Equation) => {
 
   return {x, y}
 }
+
+// a % b but works with negative a
+export const modulo = (a: number, b: number) => ((a % b) + b) % b
