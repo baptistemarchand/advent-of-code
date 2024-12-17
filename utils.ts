@@ -1,3 +1,5 @@
+import chalk from 'jsr:@nothing628/chalk'
+
 export const sum = (a: number, b: number) => a + b
 export const mul = (a: number, b: number) => a * b
 export const max = Math.max
@@ -70,8 +72,11 @@ export const printGrid = <T>(
   for (let row = 0; row < grid.length; row++) {
     for (let col = startCol; col < grid[0].length; col++) {
       const {c, bg} = formatter(grid[row][col], row, col)
-      out += c ?? ' '
-      // out += chalk.bgHex(bg)(c ?? ' ')
+      if (bg) {
+        out += chalk.bgHex(bg)(c ?? ' ')
+      } else {
+        out += c ?? ' '
+      }
     }
     out += '\n'
   }
