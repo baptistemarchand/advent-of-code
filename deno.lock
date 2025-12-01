@@ -3,7 +3,8 @@
   "specifiers": {
     "jsr:@nothing628/chalk@*": "1.0.1",
     "jsr:@std/collections@^1.0.9": "1.0.9",
-    "npm:chalk@^5.3.0": "5.3.0"
+    "npm:chalk@^5.3.0": "5.3.0",
+    "npm:ts-graphviz@^2.1.5": "2.1.5"
   },
   "jsr": {
     "@nothing628/chalk@1.0.1": {
@@ -14,8 +15,39 @@
     }
   },
   "npm": {
+    "@ts-graphviz/adapter@2.0.6": {
+      "integrity": "sha512-kJ10lIMSWMJkLkkCG5gt927SnGZcBuG0s0HHswGzcHTgvtUe7yk5/3zTEr0bafzsodsOq5Gi6FhQeV775nC35Q==",
+      "dependencies": [
+        "@ts-graphviz/common"
+      ]
+    },
+    "@ts-graphviz/ast@2.0.6": {
+      "integrity": "sha512-JbOnw6+Pm+C9jRQlNV+qJG0/VTan4oCeZ0sClm++SjaaMBJ0q86O13i6wbcWKY2x8kKt9GP2hVCgM/p/BXtXWQ==",
+      "dependencies": [
+        "@ts-graphviz/common"
+      ]
+    },
+    "@ts-graphviz/common@2.1.5": {
+      "integrity": "sha512-S6/9+T6x8j6cr/gNhp+U2olwo1n0jKj/682QVqsh7yXWV6ednHYqxFw0ZsY3LyzT0N8jaZ6jQY9YD99le3cmvg=="
+    },
+    "@ts-graphviz/core@2.0.6": {
+      "integrity": "sha512-0hvrluFirC0ph3Dn2o1B0O1fI2n7Hre1HlScfmRcO6DDDq/05Vizg5UMI0LfvkJulLuz80RPjUHluh+QfBUBKw==",
+      "dependencies": [
+        "@ts-graphviz/ast",
+        "@ts-graphviz/common"
+      ]
+    },
     "chalk@5.3.0": {
       "integrity": "sha512-dLitG79d+GV1Nb/VYcCDFivJeK1hiukt9QjRNVOsUtTy1rR1YJsmpGGTZ3qJos+uw7WmWF4wUwBd9jxjocFC2w=="
+    },
+    "ts-graphviz@2.1.5": {
+      "integrity": "sha512-IigMCo40QZvyyURRdYFh0DV6DGDt7OqkPM/TBGXSJKfNKnYmOfRg0tzSlnJS1TQCWFSTEtpBQsqmAZcziXJrWg==",
+      "dependencies": [
+        "@ts-graphviz/adapter",
+        "@ts-graphviz/ast",
+        "@ts-graphviz/common",
+        "@ts-graphviz/core"
+      ]
     }
   },
   "workspace": {
@@ -24,7 +56,8 @@
     ],
     "packageJson": {
       "dependencies": [
-        "npm:chalk@^5.3.0"
+        "npm:chalk@^5.3.0",
+        "npm:ts-graphviz@^2.1.5"
       ]
     }
   }
