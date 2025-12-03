@@ -1,29 +1,22 @@
+import {sum} from '../utils.ts'
+
 const lines = (await Deno.readTextFile('./input.txt')).split('\n')
 const banks = lines.map(line => line.split('').map(Number))
 
-const getMax = (bank: number[], numberOfDigits: number): number => {
-  let result = 0
+const NUMBER_OF_DIGITS = 12 // 2 for part 1
 
+const getMaxJolt = (bank: number[]) => {
+  let result = 0
   let lastIndex = -1
 
-  for (let i = numberOfDigits - 1; i >= 0; i--) {
-    const sub = bank.slice(lastIndex + 1, bank.length - i)
-
-    const digit = Math.max(...sub)
-    // console.log(i, bank.join(''), sub.join(''), digit)
+  for (let i = NUMBER_OF_DIGITS - 1; i >= 0; i--) {
+    const possibleDigits = bank.slice(lastIndex + 1, bank.length - i)
+    const digit = Math.max(...possibleDigits)
     result += digit * 10 ** i
-    lastIndex += 1 + sub.findIndex(x => x === digit)
+    lastIndex += 1 + possibleDigits.findIndex(x => x === digit)
   }
-
-  // console.log(bank.join(''), '===>', result)
 
   return result
 }
 
-let result = 0
-
-for (const bank of banks) {
-  result += getMax(bank, 12)
-}
-
-console.log(result)
+console.log(banks.map(getMaxJolt).reduce(sum))
