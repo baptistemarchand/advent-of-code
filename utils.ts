@@ -15,21 +15,81 @@ export const getNumbers = (line: string) => [...line.matchAll(/-?\d+/g)].map(m =
 export type Point = {x: number; y: number}
 export const point = (x: number, y: number): Point => ({x, y})
 
+export class Grid<T> {
+  map: T[][]
+
+  constructor(map: T[][]) {
+    this.map = map
+  }
+
+  static async create(filename = './input.txt') {
+    const map = (await Deno.readTextFile(filename)).split('\n').map(l => l.split(''))
+    return new Grid(map)
+  }
+
+  at(p: Point): T {
+    return this.map[p.y]?.[p.x]
+  }
+
+  set(p: Point, value: T) {
+    if (!this.map[p.y]) {
+      throw Error(`Invalid position in setAt: {x: ${p.x}, y: ${p.y}}`)
+    }
+    this.map[p.y][p.x] = value
+  }
+
+  clone(): Grid<T> {
+    return new Grid(this.map.map(row => [...row]))
+  }
+
+  walk(fn: (args: {e: T; x: number; y: number; p: Point}) => void) {
+    for (let y = 0; y < this.map.length; y++) {
+      for (let x = 0; x < this.map[0].length; x++) {
+        fn({x, y, e: this.map[y][x], p: {x, y}})
+      }
+    }
+  }
+
+  print(
+    // bg: 0xffffff
+    formatter: ({e, p}: {e: T; p: Point}) => {c?: string; bg?: string} = ({e}) => ({c: String(e)}),
+    {
+      startCol = 0,
+    }: {
+      startCol?: number
+    } = {},
+  ) {
+    let out = ''
+    for (let row = 0; row < this.map.length; row++) {
+      for (let col = startCol; col < this.map[0].length; col++) {
+        const {c, bg} = formatter({e: this.map[row][col], p: {x: col, y: row}})
+        if (bg) {
+          out += chalk.bgHex(bg)(c ?? ' ')
+        } else {
+          out += c ?? ' '
+        }
+      }
+      out += '\n'
+    }
+    console.log(out)
+  }
+}
+
 export const adj4 = ({x, y} = {x: 0, y: 0}) => [
   {x: x - 1, y: y + 0}, //  ⬆️ N
   {x: x + 0, y: y - 1}, //  ⬅️ W
   {x: x + 0, y: y + 1}, //   ➡️ E
   {x: x + 1, y: y + 0}, //   ⬇️ S
 ]
-export const adj8 = [
-  [-1, -1], // ↖️  NW
-  [-1, 0], //  ⬆️ N
-  [-1, 1], //  ↗️  NE
-  [0, -1], //  ⬅️ W
-  [0, 1], //   ➡️ E
-  [1, -1], //  ↙️ SW
-  [1, 0], //   ⬇️ S
-  [1, 1], //   ↘️ SE
+export const adj8 = ({x, y} = {x: 0, y: 0}) => [
+  {x: x - 1, y: y + 0}, //  ⬆️ N
+  {x: x + 0, y: y - 1}, //  ⬅️ W
+  {x: x + 0, y: y + 1}, //   ➡️ E
+  {x: x + 1, y: y + 0}, //   ⬇️ S
+  {x: x - 1, y: y - 1}, // ↖️  NW
+  {x: x - 1, y: y + 1}, //  ↗️  NE
+  {x: x + 1, y: y - 1}, //  ↙️ SW
+  {x: x + 1, y: y + 1}, //   ↘️ SE
 ]
 
 export const findPosInGrid = <T>(map: T[][], e: T): {x: number; y: number} => {
