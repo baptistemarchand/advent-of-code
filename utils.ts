@@ -31,14 +31,37 @@ export const getNumbers = (line: string) => [...line.matchAll(/-?\d+/g)].map(m =
 
 // -----------------------------[ GRIDS ]-----------------------------
 
-export type Point = {x: number; y: number}
-export const point = (x: number, y: number): Point => ({x, y})
+export class Point {
+  constructor(public x: number, public y: number) {}
+  equals(p: Point) {
+    return p.x === this.x && p.y === this.y
+  }
+  toString() {
+    return `${this.x}_${this.y}`
+  }
+  up() {
+    return new Point(this.x, this.y - 1)
+  }
+  down() {
+    return new Point(this.x, this.y + 1)
+  }
+  left() {
+    return new Point(this.x - 1, this.y)
+  }
+  right() {
+    return new Point(this.x + 1, this.y)
+  }
+}
 
 export class Grid<T> {
   g: T[][]
+  height: number
+  width: number
 
   constructor(map: T[][]) {
     this.g = map
+    this.height = map.length
+    this.width = map[0].length
   }
 
   static async create(filename = './input.txt') {
@@ -57,6 +80,10 @@ export class Grid<T> {
     this.g[p.y][p.x] = value
   }
 
+  contains(p: Point) {
+    return p.x >= 0 && p.y >= 0 && p.y < this.g.length && p.x < this.g[p.y].length
+  }
+
   clone(): Grid<T> {
     return new Grid(this.g.map(row => [...row]))
   }
@@ -64,7 +91,7 @@ export class Grid<T> {
   walk(fn: (args: {e: T; x: number; y: number; p: Point}) => void) {
     for (let y = 0; y < this.g.length; y++) {
       for (let x = 0; x < this.g[0].length; x++) {
-        fn({x, y, e: this.g[y][x], p: {x, y}})
+        fn({x, y, e: this.g[y][x], p: new Point(x, y)})
       }
     }
   }
@@ -95,7 +122,7 @@ export class Grid<T> {
     let out = ''
     for (let row = 0; row < this.g.length; row++) {
       for (let col = startCol; col < this.g[0].length; col++) {
-        const {c, bg} = formatter({e: this.g[row][col], p: {x: col, y: row}})
+        const {c, bg} = formatter({e: this.g[row][col], p: new Point(col, row)})
         if (bg) {
           out += chalk.bgHex(bg)(c ?? ' ')
         } else {
@@ -109,6 +136,17 @@ export class Grid<T> {
 
   toString() {
     return this.g.map(row => row.join('')).join('\n')
+  }
+
+  find(e: T): Point {
+    for (let y = 0; y < this.g.length; y++) {
+      for (let x = 0; x < this.g[y].length; x++) {
+        if (this.g[y][x] === e) {
+          return new Point(x, y)
+        }
+      }
+    }
+    throw Error(`${e} not found in grid`)
   }
 }
 
@@ -129,11 +167,11 @@ export const adj8 = ({x, y} = {x: 0, y: 0}) => [
   {x: x + 1, y: y + 1}, //   ↘️ SE
 ]
 
-export const findPosInGrid = <T>(map: T[][], e: T): {x: number; y: number} => {
+export const findPosInGrid = <T>(map: T[][], e: T): Point => {
   for (let y = 0; y < map.length; y++) {
     for (let x = 0; x < map[0].length; x++) {
       if (map[y][x] === e) {
-        return {x, y}
+        return new Point(x, y)
       }
     }
   }
@@ -143,7 +181,7 @@ export const findPosInGrid = <T>(map: T[][], e: T): {x: number; y: number} => {
 export const walkGrid = <T>(map: T[][], fn: (args: {e: T; x: number; y: number; p: Point}) => void) => {
   for (let y = 0; y < map.length; y++) {
     for (let x = 0; x < map[0].length; x++) {
-      fn({x, y, e: map[y][x], p: {x, y}})
+      fn({x, y, e: map[y][x], p: new Point(x, y)})
     }
   }
 }
