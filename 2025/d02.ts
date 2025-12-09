@@ -1,4 +1,6 @@
-const ranges = (await Deno.readTextFile('./input.txt')).split(',')
+import {getInput, validate} from '../utils.ts'
+
+const ranges = (await getInput('d02')).split(',')
 
 const isEqualParts = (s: string, numberOfParts: number) => {
   const len = s.length
@@ -28,16 +30,19 @@ const isInvalid = (n: number) => {
   return false
 }
 
-let result = 0
+let [part1, part2] = [0, 0]
 
 for (const range of ranges) {
   const [from, to] = range.split('-').map(Number)
 
   for (let i = from; i <= to; i++) {
+    if (isEqualParts(i.toString(), 2)) {
+      part1 += i
+    }
     if (isInvalid(i)) {
-      result += i
+      part2 += i
     }
   }
 }
 
-console.log(result)
+validate('2025/d02', part1, 52316131093, part2, 69564213293)

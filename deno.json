@@ -1,5 +1,7 @@
 {
-  "imports": {
-    "@std/collections": "jsr:@std/collections@^1.0.9"
-  }
+	"imports": {
+		"@std/collections": "jsr:@std/collections@^1.0.9",
+		"@std/assert": "jsr:@std/assert",
+		"@nothing628/chalk": "jsr:@nothing628/chalk"
+	}
 }

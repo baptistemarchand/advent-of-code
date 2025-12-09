@@ -1,8 +1,9 @@
-import {adj8, Grid} from '../utils.ts'
+import {adj8, Grid, validate} from '../utils.ts'
 
-let map = await Grid.create('./input.txt')
+let map = await Grid.create('./inputs/d04.txt')
 
 let totalRollsRemoved = 0
+let firstRollsRemoved: number | undefined
 
 while (true) {
   let rollsRemoved = 0
@@ -21,8 +22,13 @@ while (true) {
 
   totalRollsRemoved += rollsRemoved
   map = newMap
-  // For part 1:
-  // break
+
+  if (firstRollsRemoved === undefined) {
+    firstRollsRemoved = rollsRemoved
+  }
 }
 
-console.log(totalRollsRemoved)
+const part1 = firstRollsRemoved as number
+const part2 = totalRollsRemoved
+
+validate('2025/d04', part1, 1370, part2, 8437)

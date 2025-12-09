@@ -1,4 +1,23 @@
-import chalk from 'jsr:@nothing628/chalk'
+import chalk from '@nothing628/chalk'
+import {assertEquals} from '@std/assert/equals'
+
+// -----------------------------[ INPUT ]-----------------------------
+export const readTextFile = async (filename: string): Promise<string> => {
+  return await Deno.readTextFile(filename)
+}
+export const getInput = async (day: `d${number}`, type: 'full' | 'example' = 'full') => {
+  const filename = type === 'example' ? `./inputs/${day}.example.txt` : `./inputs/${day}.txt`
+  return await readTextFile(filename)
+}
+
+// -----------------------------[ VALIDATION ]-----------------------------
+
+export const validate = (day: string, part1: number, expected1: number, part2: number, expected2: number) => {
+  Deno.test(`${day}/part1`, () => assertEquals(part1, expected1))
+  Deno.test(`${day}/part2`, () => assertEquals(part2, expected2))
+}
+
+// -----------------------------[ UTILS ]-----------------------------
 
 export const sum = (a: number, b: number) => a + b
 export const mul = (a: number, b: number) => a * b
@@ -16,43 +35,57 @@ export type Point = {x: number; y: number}
 export const point = (x: number, y: number): Point => ({x, y})
 
 export class Grid<T> {
-  map: T[][]
+  g: T[][]
 
   constructor(map: T[][]) {
-    this.map = map
+    this.g = map
   }
 
   static async create(filename = './input.txt') {
-    const map = (await Deno.readTextFile(filename)).split('\n').map(l => l.split(''))
+    const map = (await readTextFile(filename)).split('\n').map(l => l.split(''))
     return new Grid(map)
   }
 
   at(p: Point): T {
-    return this.map[p.y]?.[p.x]
+    return this.g[p.y]?.[p.x]
   }
 
   set(p: Point, value: T) {
-    if (!this.map[p.y]) {
+    if (!this.g[p.y]) {
       throw Error(`Invalid position in setAt: {x: ${p.x}, y: ${p.y}}`)
     }
-    this.map[p.y][p.x] = value
+    this.g[p.y][p.x] = value
   }
 
   clone(): Grid<T> {
-    return new Grid(this.map.map(row => [...row]))
+    return new Grid(this.g.map(row => [...row]))
   }
 
   walk(fn: (args: {e: T; x: number; y: number; p: Point}) => void) {
-    for (let y = 0; y < this.map.length; y++) {
-      for (let x = 0; x < this.map[0].length; x++) {
-        fn({x, y, e: this.map[y][x], p: {x, y}})
+    for (let y = 0; y < this.g.length; y++) {
+      for (let x = 0; x < this.g[0].length; x++) {
+        fn({x, y, e: this.g[y][x], p: {x, y}})
       }
     }
   }
 
+  rotateCounterClockwise() {
+    const width = max(...this.g.map(line => line.length))
+
+    const newGrid: T[][] = []
+
+    for (let i = width - 1; i >= 0; i--) {
+      const newRow = this.g.map(row => row[i])
+      newGrid.push(newRow)
+    }
+
+    this.g = newGrid
+    return this
+  }
+
   print(
     // bg: 0xffffff
-    formatter: ({e, p}: {e: T; p: Point}) => {c?: string; bg?: string} = ({e}) => ({c: String(e)}),
+    formatter: ({e, p}: {e: T; p: Point}) => {c?: string; bg?: string} = ({e}) => ({c: String(e ?? ' ')}),
     {
       startCol = 0,
     }: {
@@ -60,9 +93,9 @@ export class Grid<T> {
     } = {},
   ) {
     let out = ''
-    for (let row = 0; row < this.map.length; row++) {
-      for (let col = startCol; col < this.map[0].length; col++) {
-        const {c, bg} = formatter({e: this.map[row][col], p: {x: col, y: row}})
+    for (let row = 0; row < this.g.length; row++) {
+      for (let col = startCol; col < this.g[0].length; col++) {
+        const {c, bg} = formatter({e: this.g[row][col], p: {x: col, y: row}})
         if (bg) {
           out += chalk.bgHex(bg)(c ?? ' ')
         } else {
@@ -72,6 +105,10 @@ export class Grid<T> {
       out += '\n'
     }
     console.log(out)
+  }
+
+  toString() {
+    return this.g.map(row => row.join('')).join('\n')
   }
 }
 
@@ -181,3 +218,9 @@ export const solveTwoEquations = (e1: Equation, e2: Equation) => {
 
 // a % b but works with negative a
 export const modulo = (a: number, b: number) => ((a % b) + b) % b
+
+// -----------------------------[ RANGES ]-----------------------------
+
+export type Range = {from: number; to: number}
+
+export const overlap = (r1: Range, r2: Range) => !(r1.to < r2.from || r2.to < r1.from)

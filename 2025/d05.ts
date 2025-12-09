@@ -1,7 +1,7 @@
 import {partition} from '@std/collections/partition'
-import {max, min} from '../utils.ts'
+import {getInput, max, min, overlap, type Range, validate} from '../utils.ts'
 
-const [rangesRaw, idsRaw] = (await Deno.readTextFile('./input.txt')).split('\n\n')
+const [rangesRaw, idsRaw] = (await getInput('d05')).split('\n\n')
 const ranges = rangesRaw.split('\n').map(line => {
   const [from, to] = line.split('-').map(Number)
   return {from, to}
@@ -17,13 +17,9 @@ const isFresh = (id: number) => {
   return false
 }
 
-console.log(ids.filter(isFresh).length) // Part 1
-
-type Range = {from: number; to: number}
+const part1 = ids.filter(isFresh).length
 
 let cleanRanges: Range[] = [] // Non overlapping ranges
-
-const overlap = (r1: Range, r2: Range) => !(r1.to < r2.from || r2.to < r1.from)
 
 for (const range of ranges) {
   const [overlappingRanges, newCleanRanges] = partition(cleanRanges, r => overlap(range, r))
@@ -33,4 +29,6 @@ for (const range of ranges) {
   cleanRanges = [...newCleanRanges, {from: minFrom, to: maxTo}]
 }
 
-console.log(cleanRanges.reduce((total, {from, to}) => total + 1 + (to - from), 0))
+const part2 = cleanRanges.reduce((total, {from, to}) => total + 1 + (to - from), 0)
+
+validate('2025/d05', part1, 756, part2, 355555479253787)
