@@ -2,7 +2,7 @@ import {Grid, getInput, getNumbers, mul, sum, validate} from '../utils.ts'
 
 const allLines = (await getInput('d06')).split('\n')
 const lines = allLines.slice(0, allLines.length - 1)
-const ops = [...allLines[allLines.length - 1].matchAll(/[+*]/g)].map(m => m[0]).reverse()
+const ops = [...allLines.at(-1)!.matchAll(/[+*]/g)].map(m => m[0]).reverse()
 
 const solve = (ns: number[], i: number) => ns.reduce(ops[i] === '+' ? sum : mul)
 
