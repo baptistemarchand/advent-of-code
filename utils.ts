@@ -26,10 +26,32 @@ export const reduceMax = (prev: number, curr: number) => max(prev, curr)
 export const reduceMin = (prev: number, curr: number) => min(prev, curr)
 export const min = Math.min
 export const range = (n: number) => [...Array(n).keys()]
+// Sort orders
+export const asc = (a: number, b: number) => a - b
+export const desc = (a: number, b: number) => b - a
 
 export const getNumbers = (line: string) => [...line.matchAll(/-?\d+/g)].map(m => +m[0])
 
 // -----------------------------[ GRIDS ]-----------------------------
+
+export class Point3d {
+  constructor(public x: number, public y: number, public z: number) {}
+  equals(p: Point3d) {
+    return p.x === this.x && p.y === this.y && p.z === this.z
+  }
+
+  toString() {
+    return `${this.x}_${this.y}_${this.z}`
+  }
+}
+
+export const distance3d = (p1: Point3d, p2: Point3d) => {
+  const dx = p1.x - p2.x
+  const dy = p1.y - p2.y
+  const dz = p1.z - p2.z
+
+  return Math.sqrt(dx * dx + dy * dy + dz * dz)
+}
 
 export class Point {
   constructor(public x: number, public y: number) {}
@@ -53,6 +75,12 @@ export class Point {
   }
 }
 
+export const rectangleArea = (p1: Point, p2: Point): number => {
+  const xdiff = 1 + Math.abs(p1.x - p2.x)
+  const ydiff = 1 + Math.abs(p1.y - p2.y)
+  return xdiff * ydiff
+}
+
 export class Grid<T> {
   g: T[][]
   height: number
@@ -62,6 +90,11 @@ export class Grid<T> {
     this.g = map
     this.height = map.length
     this.width = map[0].length
+  }
+
+  static createFromDimensions<T>(width: number, height: number, e: T) {
+    const map = [...Array(height)].map(_ => [...Array(width)].map(_ => e))
+    return new Grid(map)
   }
 
   static async create(filename = './input.txt') {
@@ -91,6 +124,14 @@ export class Grid<T> {
   walk(fn: (args: {e: T; x: number; y: number; p: Point}) => void) {
     for (let y = 0; y < this.g.length; y++) {
       for (let x = 0; x < this.g[0].length; x++) {
+        fn({x, y, e: this.g[y][x], p: new Point(x, y)})
+      }
+    }
+  }
+
+  walkVertically(fn: (args: {e: T; x: number; y: number; p: Point}) => void) {
+    for (let x = 0; x < this.g[0].length; x++) {
+      for (let y = 0; y < this.g.length; y++) {
         fn({x, y, e: this.g[y][x], p: new Point(x, y)})
       }
     }
