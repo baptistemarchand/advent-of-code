@@ -21,6 +21,7 @@ export const validate = (day: string, part1: number, expected1: number, part2: n
 
 export const sum = (a: number, b: number) => a + b
 export const mul = (a: number, b: number) => a * b
+export const xor = (a: number, b: number) => a ^ b
 export const max = Math.max
 export const reduceMax = (prev: number, curr: number) => max(prev, curr)
 export const reduceMin = (prev: number, curr: number) => min(prev, curr)
